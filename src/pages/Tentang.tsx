@@ -35,9 +35,9 @@ const Tentang = () => {
       <section className="py-16 lg:py-24 bg-gradient-to-b from-accent/50 to-background">
         <div className="container mx-auto px-4 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="text-3xl lg:text-5xl font-bold text-foreground mb-4">Tentang OptikaVista</h1>
+            <h1 className="text-3xl lg:text-5xl font-bold text-foreground mb-4">Tentang Dooz Optik</h1>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Kami hadir sejak 2010 dengan misi memberikan solusi penglihatan terbaik dan kacamata berkualitas untuk masyarakat Indonesia.
+              Kami hadir sejak 2015 dengan misi memberikan solusi penglihatan terbaik dan kacamata berkualitas untuk masyarakat Indonesia.
             </p>
           </motion.div>
         </div>

@@ -38,7 +38,7 @@ const Index = () => {
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                ✨ Optik Terpercaya Sejak 2010
+                ✨ Optik Terpercaya Sejak 2015
               </span>
               <h1 className="text-4xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
                 Lihat Dunia Lebih <span className="text-primary">Jelas & Stylish</span>
