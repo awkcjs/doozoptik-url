@@ -24,7 +24,7 @@ const Navbar = () => {
             <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
               <Eye className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">OptikaVista</span>
+            <span className="text-xl font-bold text-foreground">Dooz Optik</span>
           </Link>
 
           {/* Desktop */}

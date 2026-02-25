@@ -16,7 +16,7 @@ const steps = [
   { num: "01", title: "Booking", desc: "Buat janji melalui website atau telepon" },
   { num: "02", title: "Pemeriksaan", desc: "Tim optometris kami memeriksa mata Anda" },
   { num: "03", title: "Konsultasi", desc: "Pilih kacamata dan lensa yang sesuai" },
-  { num: "04", title: "Selesai", desc: "Kacamata siap dalam 1-3 hari kerja" },
+  { num: "04", title: "Selesai", desc: "Kacamata siap sesuai dengan lensa yang dipilih customer" },
 ];
 
 const fadeUp = {

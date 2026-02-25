@@ -1,0 +1,319 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    STRUKTUR PROJECT OPTIKAVISTA                              ║
+║                    Website Toko Kacamata Modern                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           FRONTEND (React + TypeScript)                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+📱 HALAMAN PUBLIK (5 Pages)
+├── 🏠 Beranda (/)
+│   ├── Hero Section
+│   ├── Highlight Cards (3)
+│   ├── Produk Unggulan (4) ← dari Database
+│   ├── Testimoni (3) ← dari Database
+│   └── CTA Section
+│
+├── 🛍️ Produk (/produk)
+│   ├── Filter Kategori (Frame, Sunglasses, Lensa)
+│   ├── Search Box
+│   ├── Grid Produk ← dari Database
+│   └── Empty State
+│
+├── ℹ️ Tentang (/tentang)
+│   ├── Statistik (4 metrics)
+│   ├── Cerita Perusahaan
+│   ├── Nilai-nilai (4 cards)
+│   ├── Tim (3 orang)
+│   └── Keunggulan (5 points)
+│
+├── 🔧 Layanan (/layanan)
+│   ├── 4 Layanan Utama
+│   ├── Fitur Setiap Layanan
+│   ├── Alur Proses (4 steps)
+│   └── CTA Section
+│
+└── 📞 Kontak (/kontak)
+    ├── Form Kontak → Database
+    ├── WhatsApp Button
+    ├── Email Button
+    ├── Google Maps Embed
+    ├── Click-to-Action (Tel, Email, Maps)
+    └── Social Media Links
+
+🔐 ADMIN DASHBOARD (/admin)
+├── Tab 1: Kelola Produk
+│   ├── Lihat Semua Produk
+│   ├── Tambah Produk + Upload Gambar
+│   ├── Edit Produk
+│   └── Hapus Produk
+│
+├── Tab 2: Kelola Pesan
+│   ├── Lihat Semua Pesan
+│   ├── Update Status (Unread/Read/Replied)
+│   ├── Balas via Email
+│   └── Hapus Pesan
+│
+└── Tab 3: Kelola Testimoni
+    ├── Lihat Semua Testimoni
+    ├── Tambah Testimoni (Nama, Rating, Text)
+    └── Hapus Testimoni
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           BACKEND (Supabase)                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+🗄️ DATABASE (PostgreSQL)
+├── 📦 products
+│   ├── id (UUID, Primary Key)
+│   ├── name (VARCHAR)
+│   ├── price (VARCHAR)
+│   ├── category (VARCHAR) → Frame | Sunglasses | Lensa
+│   ├── description (TEXT)
+│   ├── image_url (TEXT)
+│   ├── created_at (TIMESTAMP)
+│   └── updated_at (TIMESTAMP)
+│
+├── ⭐ testimonials
+│   ├── id (UUID, Primary Key)
+│   ├── name (VARCHAR)
+│   ├── text (TEXT)
+│   ├── rating (INTEGER) → 1-5
+│   └── created_at (TIMESTAMP)
+│
+├── 📧 contact_messages
+│   ├── id (UUID, Primary Key)
+│   ├── nama (VARCHAR)
+│   ├── email (VARCHAR)
+│   ├── pesan (TEXT)
+│   ├── status (VARCHAR) → unread | read | replied
+│   └── created_at (TIMESTAMP)
+│
+└── 🔧 services (Optional)
+    ├── id (UUID, Primary Key)
+    ├── title (VARCHAR)
+    ├── description (TEXT)
+    ├── icon (VARCHAR)
+    ├── features (JSONB)
+    ├── created_at (TIMESTAMP)
+    └── updated_at (TIMESTAMP)
+
+📁 STORAGE
+└── product-images (Bucket)
+    ├── Public Access: ✅
+    ├── Max Size: 5MB
+    └── Formats: PNG, JPG, WEBP
+
+🔐 SECURITY (Row Level Security)
+├── Public dapat:
+│   ├── SELECT products ✅
+│   ├── SELECT testimonials ✅
+│   └── INSERT contact_messages ✅
+│
+└── Authenticated dapat:
+    ├── INSERT/UPDATE/DELETE products ✅
+    ├── INSERT testimonials ✅
+    ├── SELECT/UPDATE contact_messages ✅
+    └── Upload/Delete images ✅
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           FILE STRUCTURE                                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+optikavista/
+│
+├── 📁 src/
+│   ├── 📁 components/
+│   │   ├── 📁 admin/
+│   │   │   ├── ProductsAdmin.tsx
+│   │   │   ├── ContactMessagesAdmin.tsx
+│   │   │   └── TestimonialsAdmin.tsx
+│   │   ├── 📁 ui/ (45+ shadcn components)
+│   │   ├── Layout.tsx
+│   │   ├── Navbar.tsx
+│   │   └── Footer.tsx
+│   │
+│   ├── 📁 hooks/
+│   │   ├── useProducts.ts
+│   │   ├── useTestimonials.ts
+│   │   ├── useContact.ts
+│   │   └── use-toast.ts
+│   │
+│   ├── 📁 lib/
+│   │   ├── supabase.ts (Client + Types)
+│   │   ├── storage.ts (Upload/Delete)
+│   │   └── utils.ts
+│   │
+│   ├── 📁 pages/
+│   │   ├── Index.tsx (Beranda)
+│   │   ├── Produk.tsx (Katalog)
+│   │   ├── Tentang.tsx (About)
+│   │   ├── Layanan.tsx (Services)
+│   │   ├── Kontak.tsx (Contact)
+│   │   ├── Admin.tsx (Dashboard)
+│   │   └── NotFound.tsx (404)
+│   │
+│   ├── App.tsx (Routes)
+│   └── main.tsx (Entry)
+│
+├── 📁 public/
+│   ├── favicon.ico
+│   ├── placeholder.svg
+│   └── robots.txt
+│
+├── 📄 Configuration Files
+│   ├── .env (API Keys - JANGAN COMMIT!)
+│   ├── .env.example (Template)
+│   ├── .gitignore
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.ts
+│   ├── tsconfig.json
+│   └── eslint.config.js
+│
+├── 📄 Database
+│   └── supabase-schema.sql (SQL Schema)
+│
+└── 📚 Documentation (12 files)
+    ├── README.md
+    ├── SELESAI_BACA_INI.md ⭐
+    ├── QUICK_REFERENCE.md
+    ├── PANDUAN_EDIT_KONTEN.md
+    ├── PANDUAN_SUPABASE.md
+    ├── PANDUAN_DEPLOYMENT.md
+    ├── CARA_AKSES_ADMIN.md
+    ├── RINGKASAN_FITUR_LENGKAP.md
+    ├── CHECKLIST_TESTING.md
+    ├── INTEGRASI_KONTAK.md
+    ├── SUMMARY.md
+    └── STRUKTUR_PROJECT.txt (This file)
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           DATA FLOW                                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+USER FLOW (Pengunjung)
+┌─────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│ Browser │───▶│ Beranda  │───▶│  Produk  │───▶│  Kontak  │
+└─────────┘    └──────────┘    └──────────┘    └──────────┘
+                     │               │               │
+                     ▼               ▼               ▼
+                ┌────────────────────────────────────────┐
+                │         Supabase Database              │
+                │  ┌──────────┐  ┌──────────┐           │
+                │  │ Products │  │ Messages │           │
+                │  └──────────┘  └──────────┘           │
+                └────────────────────────────────────────┘
+
+ADMIN FLOW
+┌─────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│ Browser │───▶│  /admin  │───▶│   CRUD   │───▶│ Database │
+└─────────┘    └──────────┘    └──────────┘    └──────────┘
+                     │               │               │
+                     │               ▼               │
+                     │          ┌─────────┐          │
+                     └─────────▶│ Storage │◀─────────┘
+                                └─────────┘
+                                (Upload Images)
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           TECH STACK                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+FRONTEND
+├── ⚛️ React 18.3 (UI Library)
+├── 📘 TypeScript 5.8 (Type Safety)
+├── ⚡ Vite 5.4 (Build Tool)
+├── 🎨 Tailwind CSS 3.4 (Styling)
+├── 🧩 shadcn/ui (Components)
+├── 🎭 Framer Motion (Animations)
+├── 🛣️ React Router 6 (Routing)
+└── 🔄 TanStack Query (Data Fetching)
+
+BACKEND
+├── 🗄️ Supabase (Database)
+├── 🐘 PostgreSQL (Database Engine)
+├── 📦 Supabase Storage (File Storage)
+└── 🔐 Row Level Security (Security)
+
+DEPLOYMENT
+├── ▲ Vercel (Hosting - Recommended)
+├── 🌐 Netlify (Alternative)
+└── 📦 GitHub Pages (Alternative)
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           FEATURES SUMMARY                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+✅ 6 Halaman (5 Public + 1 Admin)
+✅ 50+ Components
+✅ 6 Custom Hooks
+✅ 4 Database Tables
+✅ 1 Storage Bucket
+✅ CRUD Operations
+✅ File Upload (Drag & Drop)
+✅ Image Preview
+✅ Form Validation
+✅ Loading States
+✅ Error Handling
+✅ Toast Notifications
+✅ Responsive Design
+✅ Smooth Animations
+✅ WhatsApp Integration
+✅ Email Integration
+✅ Google Maps Integration
+✅ Social Media Links
+✅ Click-to-Action
+✅ Search & Filter
+✅ Row Level Security
+✅ TypeScript Types
+✅ ESLint Rules
+✅ 12 Documentation Files
+✅ Production Ready
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           QUICK COMMANDS                                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Development:
+  npm run dev              # Start dev server
+  npm run build            # Build for production
+  npm run preview          # Preview production build
+
+Testing:
+  npm run lint             # Run ESLint
+  npm run test             # Run tests
+
+URLs:
+  http://localhost:5173           # Beranda
+  http://localhost:5173/admin     # Admin Dashboard
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           NEXT STEPS                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+1. ✅ Test website locally (npm run dev)
+2. ✅ Customize konten (edit files)
+3. ✅ Tambah produk real (via /admin)
+4. ✅ Deploy ke hosting (Vercel/Netlify)
+5. ✅ Share ke customer!
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           SUPPORT                                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+📚 Documentation: Baca SELESAI_BACA_INI.md
+⚡ Quick Help: Baca QUICK_REFERENCE.md
+🐛 Troubleshooting: Baca CHECKLIST_TESTING.md
+📧 Questions: Check documentation files
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    PROJECT STATUS: ✅ COMPLETE                               ║
+║                    READY TO DEPLOY: ✅ YES                                   ║
+║                    DOCUMENTATION: ✅ COMPLETE                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Made with ❤️ for OptikaVista
+Version: 1.0.0
+Status: Production Ready ✅

@@ -120,7 +120,7 @@ const Tentang = () => {
         <div className="container mx-auto px-4 lg:px-8 max-w-2xl text-center">
           <h2 className="text-2xl font-bold text-foreground mb-8">Mengapa Memilih Kami?</h2>
           <div className="space-y-4 text-left">
-            {["Peralatan pemeriksaan mata berteknologi terbaru", "Optometris bersertifikat dan berpengalaman", "Garansi produk hingga 1 tahun", "Harga transparan tanpa biaya tersembunyi", "Layanan after-sales yang responsif"].map((item) => (
+            {["Peralatan pemeriksaan mata berteknologi terbaru", "Optometris bersertifikat dan berpengalaman", "Garansi produk hingga 2 tahun", "Harga transparan tanpa biaya tersembunyi", "Layanan after-sales yang responsif"].map((item) => (
               <div key={item} className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-primary shrink-0" />
                 <span className="text-muted-foreground">{item}</span>

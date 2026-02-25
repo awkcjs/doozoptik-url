@@ -7,56 +7,74 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
+import { useSendContactMessage } from "@/hooks/useContact";
 
 // Konfigurasi kontak
-const WHATSAPP_NUMBER = "6281234567890"; // Ganti dengan nomor WhatsApp Anda (format: 62xxx)
+const WHATSAPP_NUMBER = "628112640770"; // Ganti dengan nomor WhatsApp Anda (format: 62xxx)
 const EMAIL_ADDRESS = "info@optikavista.com";
-const PHONE_NUMBER = "(021) 555-0123";
-const ADDRESS = "Jl. Sudirman No. 123, Jakarta Selatan 12190";
-const GOOGLE_MAPS_EMBED = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1234567890!2d106.8229!3d-6.2088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTInMzEuNyJTIDEwNsKwNDknMjIuNCJF!5e0!3m2!1sen!2sid!4v1234567890"; // Ganti dengan embed URL Google Maps Anda
+const PHONE_NUMBER = "(0276) 3287286";
+const ADDRESS = "Jl. Pandanaran No. 252D, Boyolali, Jawa Tengah, Indonesia 57313";
+
+// URL Google Maps untuk embed iframe (HANYA URL, bukan tag <iframe>)
+const GOOGLE_MAPS_EMBED = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1355.2804437038787!2d110.60017622153077!3d-7.525421636394591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a6fba095510cb%3A0xb80389938b4ff58a!2sDooz%20Optik%20Boyolali!5e0!3m2!1sid!2sid!4v1771987209108!5m2!1sid!2sid";
+
+// URL Google Maps untuk link (klik alamat)
+const GOOGLE_MAPS_LINK = "https://maps.app.goo.gl/eLREHxw8RMm5QP9e8";
 
 const contactInfo = [
   { icon: MapPin, label: "Alamat", value: ADDRESS, action: "map" },
   { icon: Phone, label: "Telepon", value: PHONE_NUMBER, action: "phone" },
   { icon: Mail, label: "Email", value: EMAIL_ADDRESS, action: "email" },
-  { icon: Clock, label: "Jam Operasional", value: "Senin - Sabtu: 09:00 - 20:00", action: null },
+  { icon: Clock, label: "Jam Operasional", value: "Senin - Ahad: 08:00 - 21:00", action: null },
 ];
 
 const Kontak = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ nama: "", email: "", pesan: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Hook untuk menyimpan pesan ke Supabase
+  const sendMessage = useSendContactMessage();
 
-  // Handler untuk mengirim email
+  // Handler untuk mengirim pesan
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Membuat mailto link dengan data form
-    const subject = encodeURIComponent(`Pesan dari ${form.nama}`);
-    const body = encodeURIComponent(
-      `Nama: ${form.nama}\nEmail: ${form.email}\n\nPesan:\n${form.pesan}`
-    );
-    const mailtoLink = `mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${body}`;
-
-    // Membuka email client
-    window.location.href = mailtoLink;
-
-    // Simulasi delay untuk UX
-    setTimeout(() => {
+    try {
+      // Simpan ke Supabase
+      await sendMessage.mutateAsync(form);
+      
+      toast({ 
+        title: "Pesan Terkirim!", 
+        description: "Terima kasih, kami akan menghubungi Anda segera." 
+      });
+      
+      setForm({ nama: "", email: "", pesan: "" });
+    } catch (error) {
+      // Jika gagal simpan ke Supabase, fallback ke mailto
+      const subject = encodeURIComponent(`Pesan dari ${form.nama}`);
+      const body = encodeURIComponent(
+        `Nama: ${form.nama}\nEmail: ${form.email}\n\nPesan:\n${form.pesan}`
+      );
+      const mailtoLink = `mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${body}`;
+      window.location.href = mailtoLink;
+      
       toast({ 
         title: "Email Client Dibuka!", 
         description: "Silakan kirim email dari aplikasi email Anda." 
       });
+      
       setForm({ nama: "", email: "", pesan: "" });
+    } finally {
       setIsSubmitting(false);
-    }, 500);
+    }
   };
 
   // Handler untuk WhatsApp
   const handleWhatsApp = () => {
     const message = encodeURIComponent(
-      "Halo OptikaVista, saya ingin bertanya tentang produk dan layanan Anda."
+      "Halo Dooz Optik, saya ingin bertanya tentang produk dan layanan Anda."
     );
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
   };
@@ -71,7 +89,7 @@ const Kontak = () => {
         window.location.href = `mailto:${value}`;
         break;
       case "map":
-        window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`, "_blank");
+        window.open(`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1355.2804437038787!2d110.60017622153077!3d-7.525421636394591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a6fba095510cb%3A0xb80389938b4ff58a!2sDooz%20Optik%20Boyolali!5e0!3m2!1sid!2sid!4v1771987209108!5m2!1sid!2sid${encodeURIComponent(value)}`, "_blank");
         break;
     }
   };
@@ -175,7 +193,7 @@ const Kontak = () => {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Lokasi OptikaVista"
+                  title="Lokasi Dooz Optik"
                   className="w-full"
                 />
               </div>

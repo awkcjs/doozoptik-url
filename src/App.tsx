@@ -8,6 +8,7 @@ import Produk from "./pages/Produk";
 import Tentang from "./pages/Tentang";
 import Layanan from "./pages/Layanan";
 import Kontak from "./pages/Kontak";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/tentang" element={<Tentang />} />
           <Route path="/layanan" element={<Layanan />} />
           <Route path="/kontak" element={<Kontak />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

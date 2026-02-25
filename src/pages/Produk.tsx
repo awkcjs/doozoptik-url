@@ -1,22 +1,24 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Glasses, Search } from "lucide-react";
+import { Glasses, Search, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Layout from "@/components/Layout";
+import { useProducts } from "@/hooks/useProducts";
 
 const categories = ["Semua", "Frame", "Sunglasses", "Lensa"];
 
-const products = [
-  { name: "Ray-Ban Aviator", price: "Rp 2.500.000", category: "Sunglasses", desc: "Frame metal klasik dengan lensa tinted" },
-  { name: "Oakley Holbrook", price: "Rp 1.800.000", category: "Sunglasses", desc: "Frame sporty untuk aktivitas outdoor" },
-  { name: "Tom Ford Classic", price: "Rp 4.200.000", category: "Frame", desc: "Desain elegan untuk tampilan premium" },
-  { name: "Gentle Monster Sana", price: "Rp 3.100.000", category: "Frame", desc: "Gaya Korea dengan sentuhan modern" },
-  { name: "Essilor Crizal", price: "Rp 1.200.000", category: "Lensa", desc: "Lensa anti-silau dan anti-gores" },
-  { name: "Zeiss Progressive", price: "Rp 3.500.000", category: "Lensa", desc: "Lensa progresif presisi tinggi" },
-  { name: "Cartier Panthère", price: "Rp 8.500.000", category: "Frame", desc: "Luxury frame dengan detail emas" },
-  { name: "Persol Calligrapher", price: "Rp 3.800.000", category: "Sunglasses", desc: "Handcrafted Italian sunglasses" },
+// Data fallback jika Supabase belum dikonfigurasi
+const fallbackProducts = [
+  { id: "1", name: "Ray-Ban Aviator", price: "Rp 2.500.000", category: "Sunglasses", description: "Frame metal klasik dengan lensa tinted" },
+  { id: "2", name: "Oakley Holbrook", price: "Rp 1.800.000", category: "Sunglasses", description: "Frame sporty untuk aktivitas outdoor" },
+  { id: "3", name: "Tom Ford Classic", price: "Rp 4.200.000", category: "Frame", description: "Desain elegan untuk tampilan premium" },
+  { id: "4", name: "Gentle Monster Sana", price: "Rp 3.100.000", category: "Frame", description: "Gaya Korea dengan sentuhan modern" },
+  { id: "5", name: "Essilor Crizal", price: "Rp 1.200.000", category: "Lensa", description: "Lensa anti-silau dan anti-gores" },
+  { id: "6", name: "Zeiss Progressive", price: "Rp 3.500.000", category: "Lensa", description: "Lensa progresif presisi tinggi" },
+  { id: "7", name: "Cartier Panthère", price: "Rp 8.500.000", category: "Frame", description: "Luxury frame dengan detail emas" },
+  { id: "8", name: "Persol Calligrapher", price: "Rp 3.800.000", category: "Sunglasses", description: "Handcrafted Italian sunglasses" },
 ];
 
 const fadeUp = {
@@ -27,12 +29,21 @@ const fadeUp = {
 const Produk = () => {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [search, setSearch] = useState("");
+  
+  // Fetch produk dari Supabase
+  const { data: productsFromDB, isLoading, error } = useProducts();
+  
+  // Gunakan data dari Supabase atau fallback
+  const products = productsFromDB && productsFromDB.length > 0 ? productsFromDB : fallbackProducts;
 
-  const filtered = products.filter((p) => {
-    const matchCat = activeCategory === "Semua" || p.category === activeCategory;
-    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
-  });
+  // Filter produk
+  const filtered = useMemo(() => {
+    return products.filter((p) => {
+      const matchCat = activeCategory === "Semua" || p.category === activeCategory;
+      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+      return matchCat && matchSearch;
+    });
+  }, [products, activeCategory, search]);
 
   return (
     <Layout>
@@ -64,17 +75,37 @@ const Produk = () => {
           </div>
 
           {/* Grid */}
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              <span className="ml-3 text-muted-foreground">Memuat produk...</span>
+            </div>
+          ) : error ? (
+            <div className="text-center py-16 text-muted-foreground">
+              <p className="mb-2">Gagal memuat produk dari database</p>
+              <p className="text-sm">Menampilkan data contoh</p>
+            </div>
+          ) : null}
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filtered.map((p, i) => (
-              <motion.div key={p.name} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+              <motion.div key={p.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                 <Card className="overflow-hidden border hover:shadow-lg transition-all group cursor-pointer">
-                  <div className="aspect-square bg-muted flex items-center justify-center">
-                    <Glasses className="w-16 h-16 text-muted-foreground/30 group-hover:text-primary/40 transition-colors" />
+                  <div className="aspect-square bg-muted flex items-center justify-center overflow-hidden">
+                    {p.image_url ? (
+                      <img 
+                        src={p.image_url} 
+                        alt={p.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                      />
+                    ) : (
+                      <Glasses className="w-16 h-16 text-muted-foreground/30 group-hover:text-primary/40 transition-colors" />
+                    )}
                   </div>
                   <CardContent className="p-5 space-y-2">
                     <span className="text-xs font-medium text-primary">{p.category}</span>
                     <h3 className="font-semibold text-foreground">{p.name}</h3>
-                    <p className="text-xs text-muted-foreground">{p.desc}</p>
+                    <p className="text-xs text-muted-foreground">{p.description}</p>
                     <p className="text-sm font-bold text-primary">{p.price}</p>
                   </CardContent>
                 </Card>

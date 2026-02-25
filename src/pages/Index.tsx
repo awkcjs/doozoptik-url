@@ -1,27 +1,30 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Eye, Glasses, ShieldCheck, Star, ArrowRight, CheckCircle } from "lucide-react";
+import { Eye, Glasses, ShieldCheck, Star, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout";
+import { useProducts } from "@/hooks/useProducts";
+import { useTestimonials } from "@/hooks/useTestimonials";
 
 const highlights = [
   { icon: Eye, title: "Pemeriksaan Mata", desc: "Pemeriksaan komprehensif dengan alat terkini" },
   { icon: Glasses, title: "Koleksi Premium", desc: "Frame dari brand ternama dunia" },
-  { icon: ShieldCheck, title: "Garansi Resmi", desc: "Garansi lensa dan frame hingga 1 tahun" },
+  { icon: ShieldCheck, title: "Garansi Resmi", desc: "Garansi lensa dan frame hingga 2 tahun" },
 ];
 
-const bestSellers = [
-  { name: "Ray-Ban Aviator", price: "Rp 2.500.000", category: "Sunglasses" },
-  { name: "Oakley Holbrook", price: "Rp 1.800.000", category: "Sunglasses" },
-  { name: "Tom Ford Classic", price: "Rp 4.200.000", category: "Frame" },
-  { name: "Gentle Monster Sana", price: "Rp 3.100.000", category: "Frame" },
+// Data fallback
+const fallbackBestSellers = [
+  { id: "1", name: "Ray-Ban Aviator", price: "Rp 2.500.000", category: "Sunglasses", description: "", image_url: "" },
+  { id: "2", name: "Oakley Holbrook", price: "Rp 1.800.000", category: "Sunglasses", description: "", image_url: "" },
+  { id: "3", name: "Tom Ford Classic", price: "Rp 4.200.000", category: "Frame", description: "", image_url: "" },
+  { id: "4", name: "Gentle Monster Sana", price: "Rp 3.100.000", category: "Frame", description: "", image_url: "" },
 ];
 
-const testimonials = [
-  { name: "Rina Wijaya", text: "Pelayanan sangat ramah dan profesional. Kacamata saya sangat nyaman!", rating: 5 },
-  { name: "Budi Santoso", text: "Pemeriksaan mata yang sangat detail. Hasilnya akurat dan cepat.", rating: 5 },
-  { name: "Sari Dewi", text: "Koleksi kacamata lengkap dengan harga yang bersaing. Recommended!", rating: 5 },
+const fallbackTestimonials = [
+  { id: "1", name: "Fitri Haryani", text: "Optik favorit, tempat nyaman luas. Alat pemeriksaannya juga lengkap . Mbak nya juga ramah 😍😍.", rating: 5 },
+  { id: "2", name: "Ika Emilia", text: "Pelayanan sangat bagus, memberikan informasi dengan baik dan detail. Kualitas frame dan lensa tidak perlu diragukan lagi. Semuanya luar biasa bagus.", rating: 5 },
+  { id: "3", name: "Muhajir Alhaq", text: "Pelayanan bagus, ruang nyaman, udah make teknologi yg up to date utk cek matanya, banyak pilihan juga. Recommended lahhh 👍", rating: 5 },
 ];
 
 const fadeUp = {
@@ -30,6 +33,19 @@ const fadeUp = {
 };
 
 const Index = () => {
+  // Fetch data dari Supabase
+  const { data: productsFromDB, isLoading: loadingProducts } = useProducts();
+  const { data: testimonialsFromDB, isLoading: loadingTestimonials } = useTestimonials();
+  
+  // Gunakan data dari Supabase atau fallback, ambil 4 produk pertama
+  const bestSellers = productsFromDB && productsFromDB.length > 0 
+    ? productsFromDB.slice(0, 4) 
+    : fallbackBestSellers;
+    
+  const testimonials = testimonialsFromDB && testimonialsFromDB.length > 0
+    ? testimonialsFromDB.slice(0, 3)
+    : fallbackTestimonials;
+
   return (
     <Layout>
       {/* Hero */}
@@ -88,27 +104,44 @@ const Index = () => {
             <h2 className="text-3xl font-bold text-foreground mb-3">Produk Unggulan</h2>
             <p className="text-muted-foreground">Koleksi terlaris pilihan pelanggan kami</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bestSellers.map((p, i) => (
-              <motion.div key={p.name} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-                <Card className="overflow-hidden border hover:shadow-lg transition-shadow group cursor-pointer">
-                  <div className="aspect-square bg-muted flex items-center justify-center">
-                    <Glasses className="w-16 h-16 text-muted-foreground/30 group-hover:text-primary/40 transition-colors" />
-                  </div>
-                  <CardContent className="p-5">
-                    <span className="text-xs font-medium text-primary">{p.category}</span>
-                    <h3 className="font-semibold text-foreground mt-1">{p.name}</h3>
-                    <p className="text-sm font-bold text-primary mt-2">{p.price}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Button variant="outline" asChild>
-              <Link to="/produk">Lihat Semua Produk <ArrowRight className="w-4 h-4" /></Link>
-            </Button>
-          </div>
+          
+          {loadingProducts ? (
+            <div className="flex justify-center items-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {bestSellers.map((p, i) => (
+                  <motion.div key={p.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                    <Card className="overflow-hidden border hover:shadow-lg transition-shadow group cursor-pointer">
+                      <div className="aspect-square bg-muted flex items-center justify-center overflow-hidden">
+                        {p.image_url ? (
+                          <img 
+                            src={p.image_url} 
+                            alt={p.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          />
+                        ) : (
+                          <Glasses className="w-16 h-16 text-muted-foreground/30 group-hover:text-primary/40 transition-colors" />
+                        )}
+                      </div>
+                      <CardContent className="p-5">
+                        <span className="text-xs font-medium text-primary">{p.category}</span>
+                        <h3 className="font-semibold text-foreground mt-1">{p.name}</h3>
+                        <p className="text-sm font-bold text-primary mt-2">{p.price}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="text-center mt-10">
+                <Button variant="outline" asChild>
+                  <Link to="/produk">Lihat Semua Produk <ArrowRight className="w-4 h-4" /></Link>
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -119,23 +152,30 @@ const Index = () => {
             <h2 className="text-3xl font-bold text-foreground mb-3">Kata Pelanggan</h2>
             <p className="text-muted-foreground">Kepuasan pelanggan adalah prioritas kami</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <motion.div key={t.name} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-                <Card className="border-none shadow-md">
-                  <CardContent className="p-8">
-                    <div className="flex gap-1 mb-4">
-                      {Array.from({ length: t.rating }).map((_, j) => (
-                        <Star key={j} className="w-4 h-4 fill-primary text-primary" />
-                      ))}
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">"{t.text}"</p>
-                    <p className="font-semibold text-foreground text-sm">{t.name}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+          
+          {loadingTestimonials ? (
+            <div className="flex justify-center items-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {testimonials.map((t, i) => (
+                <motion.div key={t.id} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                  <Card className="border-none shadow-md">
+                    <CardContent className="p-8">
+                      <div className="flex gap-1 mb-4">
+                        {Array.from({ length: t.rating }).map((_, j) => (
+                          <Star key={j} className="w-4 h-4 fill-primary text-primary" />
+                        ))}
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">"{t.text}"</p>
+                      <p className="font-semibold text-foreground text-sm">{t.name}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

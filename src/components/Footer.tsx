@@ -12,17 +12,21 @@ const Footer = () => {
               <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
                 <Eye className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-white">OptikaVista</span>
+              <span className="text-xl font-bold text-white">Dooz Optik</span>
             </div>
             <p className="text-sm leading-relaxed opacity-80">
-              Solusi terbaik untuk kesehatan mata dan gaya Anda. Kami menyediakan kacamata berkualitas dengan layanan pemeriksaan mata profesional.
+              Optik terpercaya sejak 2015. Menyediakan kacamata berkualitas dengan harga terjangkau untuk seluruh keluarga Indonesia.
             </p>
             <div className="flex gap-3">
-              {[Facebook, Instagram, Twitter].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-full bg-white/10 hover:bg-primary flex items-center justify-center transition-colors">
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
+              <a href="https://facebook.com/doozoptik" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 hover:bg-primary flex items-center justify-center transition-colors">
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a href="https://instagram.com/doozoptik" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 hover:bg-primary flex items-center justify-center transition-colors">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="https://wa.me/628112640770" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 hover:bg-primary flex items-center justify-center transition-colors" title="WhatsApp">
+                <Phone className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
@@ -48,7 +52,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-white mb-4">Layanan</h4>
             <ul className="space-y-3 text-sm opacity-80">
-              {["Pemeriksaan Mata", "Pemasangan Lensa", "Konsultasi Optik", "Kacamata Custom"].map((s) => (
+              {["Pemeriksaan Mata Gratis", "Lensa Kontak", "Frame Premium", "Garansi 2 Tahun"].map((s) => (
                 <li key={s}>{s}</li>
               ))}
             </ul>
@@ -58,17 +62,17 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-white mb-4">Kontak</h4>
             <ul className="space-y-3 text-sm opacity-80">
-              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" /> Jl. Sudirman No. 123, Jakarta Selatan</li>
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /> (021) 555-0123</li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /> info@optikavista.com</li>
-              <li className="flex items-start gap-2"><Clock className="w-4 h-4 mt-0.5 shrink-0" /> Sen-Sab: 09:00 - 20:00</li>
+              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 shrink-0" /> Jl. Pandanaran No. 252D, Boyolali, Jawa Tengah</li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4 shrink-0" /> (0276) 3287286</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4 shrink-0" /> info@doozoptik.com</li>
+              <li className="flex items-start gap-2"><Clock className="w-4 h-4 mt-0.5 shrink-0" /> Senin - Ahad: 08:00 - 21:00</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 lg:px-8 py-6 text-center text-sm opacity-60">
-          © 2026 OptikaVista. Semua hak dilindungi.
+          © 2026 Dooz Optik Boyolali. Semua hak dilindungi.
         </div>
       </div>
     </footer>
