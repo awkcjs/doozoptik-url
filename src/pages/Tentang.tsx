@@ -28,6 +28,34 @@ const fadeUp = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
 };
 
+// Brand frame — scroll ke kiri
+const framebrands = [
+  { name: "Ray-Ban", logo: "" },
+  { name: "Oakley", logo: "" },
+  { name: "Silhouette", logo: "" },
+  { name: "Tom Ford", logo: "" },
+  { name: "Prada", logo: "" },
+  { name: "Gucci", logo: "" },
+  { name: "Versace", logo: "" },
+  { name: "Carrera", logo: "" },
+  { name: "Police", logo: "" },
+  { name: "Fossil", logo: "" },
+];
+
+// Brand lensa — scroll ke kanan
+const lensbrands = [
+  { name: "Essilor", logo: "" },
+  { name: "Hoya", logo: "" },
+  { name: "Zeiss", logo: "" },
+  { name: "Nikon", logo: "" },
+  { name: "Rodenstock", logo: "" },
+  { name: "Crizal", logo: "" },
+  { name: "Transitions", logo: "" },
+  { name: "Seiko", logo: "" },
+  { name: "Kodak", logo: "" },
+  { name: "Shamir", logo: "" },
+];
+
 const Tentang = () => {
   return (
     <Layout>
@@ -63,8 +91,8 @@ const Tentang = () => {
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
             <h2 className="text-2xl font-bold text-foreground mb-6 text-center">Cerita Kami</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>OptikaVista didirikan oleh Dr. Andi Pratama pada tahun 2010 di Jakarta. Berawal dari klinik kecil, kami kini telah berkembang menjadi salah satu optik terpercaya dengan 3 cabang di area Jabodetabek.</p>
-              <p>Kami percaya bahwa setiap orang berhak mendapatkan penglihatan yang jernih. Oleh karena itu, kami menghadirkan layanan pemeriksaan mata profesional, koleksi kacamata premium, dan harga yang terjangkau.</p>
+              <p>Dooz Optik hadir sebagai solusi terpercaya untuk kebutuhan penglihatan Anda. Kami menyediakan berbagai pilihan kacamata berkualitas, mulai dari frame stylish hingga lensa dengan teknologi terbaru yang dirancang untuk memberikan kenyamanan dan kejernihan maksimal.</p>
+              <p>Didukung oleh pelayanan yang ramah dan profesional, Dooz Optik berkomitmen membantu setiap pelanggan menemukan kacamata yang tidak hanya sesuai dengan kebutuhan medis, tetapi juga menunjang penampilan. Kepuasan dan kesehatan mata Anda adalah prioritas utama kami.</p>
             </div>
           </motion.div>
         </div>
@@ -126,6 +154,57 @@ const Tentang = () => {
                 <span className="text-muted-foreground">{item}</span>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+      {/* Partner Brand */}
+      <section className="py-16 bg-secondary/30 overflow-hidden">
+        <div className="container mx-auto px-4 lg:px-8 text-center mb-10">
+          <h2 className="text-2xl font-bold text-foreground mb-2">Partner Brand Kami</h2>
+          <p className="text-muted-foreground">Kami menghadirkan koleksi dari brand kacamata terpercaya dunia</p>
+        </div>
+
+        {/* Frame brands — kiri */}
+        <div className="mb-3">
+          <p className="text-xs font-semibold text-muted-foreground text-center mb-4 tracking-widest uppercase">Merk Frame</p>
+          <div className="relative w-full overflow-hidden">
+            <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-secondary/30 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-secondary/30 to-transparent z-10 pointer-events-none" />
+            <div className="flex animate-marquee-left whitespace-nowrap" style={{ willChange: 'transform' }}>
+              {[...framebrands, ...framebrands, ...framebrands, ...framebrands].map((brand, i) => (
+                <div key={i} className="inline-flex items-center justify-center mx-4 shrink-0">
+                  <div className="h-14 w-36 bg-white rounded-xl shadow-sm flex items-center justify-center px-4 border border-border">
+                    {brand.logo ? (
+                      <img src={brand.logo} alt={brand.name} className="max-h-9 max-w-full object-contain" />
+                    ) : (
+                      <span className="text-sm font-bold text-foreground tracking-wide">{brand.name}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Lens brands — kanan */}
+        <div className="mt-6">
+          <p className="text-xs font-semibold text-muted-foreground text-center mb-4 tracking-widest uppercase">Merk Lensa</p>
+          <div className="relative w-full overflow-hidden">
+            <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-secondary/30 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-secondary/30 to-transparent z-10 pointer-events-none" />
+            <div className="flex animate-marquee-right whitespace-nowrap" style={{ willChange: 'transform' }}>
+              {[...lensbrands, ...lensbrands, ...lensbrands, ...lensbrands].map((brand, i) => (
+                <div key={i} className="inline-flex items-center justify-center mx-4 shrink-0">
+                  <div className="h-14 w-36 bg-white rounded-xl shadow-sm flex items-center justify-center px-4 border border-border">
+                    {brand.logo ? (
+                      <img src={brand.logo} alt={brand.name} className="max-h-9 max-w-full object-contain" />
+                    ) : (
+                      <span className="text-sm font-bold text-foreground tracking-wide">{brand.name}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

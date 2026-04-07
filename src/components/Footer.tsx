@@ -7,13 +7,10 @@ const Footer = () => {
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-                <Eye className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-bold text-white">Dooz Optik</span>
-            </div>
+            <div className="space-y-4">
+            <Link to="/">
+              <img src="/png/logo.img.png" alt="Dooz Optik" className="h-10 w-auto" />
+            </Link>
             <p className="text-sm leading-relaxed opacity-80">
               Optik terpercaya sejak 2015. Menyediakan kacamata berkualitas dengan harga terjangkau untuk seluruh keluarga Indonesia.
             </p>

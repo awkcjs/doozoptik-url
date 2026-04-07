@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Eye, Glasses, ShieldCheck, Star, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+import { Eye, Glasses, ShieldCheck, Star, ArrowRight, CheckCircle, Loader2, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout";
@@ -179,6 +179,57 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Cabang */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-3">Cabang Kami</h2>
+            <p className="text-muted-foreground">Kunjungi salah satu dari 3 cabang kami yang tersebar di Jawa Tengah</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                name: "Dooz Optik Boyolali",
+                address: "Jl. Pandanaran No. 252D, Boyolali, Jawa Tengah 57313",
+                maps: "https://maps.app.goo.gl/eLREHxw8RMm5QP9e8",
+              },
+              {
+                name: "Dooz Optik Karanganyar",
+                address: "Jl. Kolonel Sugiono No.2, Karanganyar, Jawa Tengah 57722",
+                maps: "https://maps.google.com/?q=Jl.+Kolonel+Sugiono+No.2+Karanganyar+Jawa+Tengah",
+              },
+              {
+                name: "Dooz Optik Gentan",
+                address: "Jl. Raya Songgo Langit, Gentan, Sukoharjo, Jawa Tengah 57556",
+                maps: "https://maps.google.com/?q=Jl.+Raya+Songgo+Langit+Gentan+Sukoharjo+Jawa+Tengah",
+              },
+            ].map((branch, i) => (
+              <motion.div key={branch.name} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                <Card className="border-none shadow-md hover:shadow-lg transition-shadow h-full">
+                  <CardContent className="p-8 flex flex-col gap-4 h-full">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <MapPin className="w-6 h-6 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-foreground text-lg mb-2">{branch.name}</h3>
+                      <p className="text-sm text-muted-foreground">{branch.address}</p>
+                    </div>
+                    <a
+                      href={branch.maps}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-medium text-primary hover:underline flex items-center gap-1"
+                    >
+                      Lihat di Maps <ArrowRight className="w-3 h-3" />
+                    </a>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20 bg-primary">
         <div className="container mx-auto px-4 lg:px-8 text-center">
@@ -190,7 +241,7 @@ const Index = () => {
             <Button size="lg" variant="secondary" asChild>
               <Link to="/layanan"><CheckCircle className="w-4 h-4" /> Booking Sekarang</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
+            <Button size="lg" variant="secondary" asChild>
               <Link to="/kontak">Hubungi Kami</Link>
             </Button>
           </div>
